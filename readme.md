@@ -35,3 +35,15 @@ And with the second camera we will do a render and put it on the screen.
 5. The final pass is put on the canvas.
 
 6. We don't have to do all this stuff, it is done automatically by 'EffectComposer' class.
+
+7. EffectComposer
+
+   1. The EffectComposer requires to arguments renderer, renderTarget.
+   2. As the first pass, we usually start from a render of the scene. 'RenderPass'. Import 'RenderPass'.
+   3. RenderPass is something that takes the scene, do a render and put it on the screen. So we need a first renderpass that will just take the scene, do a render and put it inside the redner target, or if it is the only pass it will directly put it in the screen, as there is no need to use a renderTarget if it's just single render.
+
+   4. Instantiate an EffectComposer, use the renderer as parameter, set the pixel ratio with setPixelRatio(...) and resize it with setSize()
+
+   5. Instantiate a RenderPass and add it to effectComposer with addPass(...)
+
+   6. In tick() function we need to replace the renderer.render(...) with effectComposer.render()
