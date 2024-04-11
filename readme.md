@@ -80,3 +80,7 @@ And with the second camera we will do a render and put it on the screen.
 
     1. import GammaCorrectionShader shader.
     2. Instantiate the ShaderPass with the GammaCorrectionShader as a parameter and add it to effectComposer.
+
+12. Resizing :
+    1. We did the resizing on the renderer, but now we have to do it on the effectComposer too.
+    2. The resizing isn't handle properly, we need to call the setSize(...) on effectComposer inside the resize callback function.
