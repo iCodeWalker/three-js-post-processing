@@ -6,6 +6,13 @@ import * as dat from "lil-gui";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 // import RenderPass
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+// import DotScreenPass
+import { DotScreenPass } from "three/examples/jsm/postprocessing/DotScreenPass.js";
+// import GlitchPass
+import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass.js";
+// for using RBGShift pass we have to use it with ShaderPass
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 
 /**
  * Base
@@ -148,6 +155,28 @@ effectComposer.setSize(sizes.width, sizes.height);
  */
 const renderPass = new RenderPass(scene, camera);
 effectComposer.addPass(renderPass);
+/**
+ * Instantiate the 'DotScreenPass'
+ */
+const dotScreenPass = new DotScreenPass();
+// to disable the pass
+dotScreenPass.enabled = false;
+effectComposer.addPass(dotScreenPass);
+
+/**
+ * Instantiate the 'GlitchPass'
+ */
+const glitchPass = new GlitchPass();
+glitchPass.goWild = false;
+glitchPass.enabled = false;
+effectComposer.addPass(glitchPass);
+
+/**
+ * Instantiate the 'ShaderPass' with 'RGBShiftShader'
+ */
+const rgbShiftPass = new ShaderPass(RGBShiftShader);
+rgbShiftPass.enabled = true;
+effectComposer.addPass(rgbShiftPass);
 
 /**
  * Animate

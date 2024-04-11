@@ -47,3 +47,31 @@ And with the second camera we will do a render and put it on the screen.
    5. Instantiate a RenderPass and add it to effectComposer with addPass(...)
 
    6. In tick() function we need to replace the renderer.render(...) with effectComposer.render()
+
+8. Dot Screen Pass
+
+   1. Import the DotScreenPass.
+   2. Instantiate it and add it to the effectComposer after the renderPass.
+   3. We can disable the pass with enabled = false.
+
+9. Glitch Pass
+
+   1. Import the GlitchPass.
+   2. Instantiate it and add it to the effectComposer.
+   3. Some passes have editable properties. Change the 'goWild' property to true
+
+10. RGB Shift Pass
+
+    1. Import the RGBShift. But RGBShift is available as a shaders,and We need to use it with a 'ShaderPass'.
+    2. Instantiate the ShaderPass with the RGBShiftShader as a parameter and add it to effectComposer.
+
+    3. FIXING THE COLOR:  
+       IMPORTANT POINT :
+       "Since we are using EffectComposer, the colors are darker."
+
+       This is because the renderer.outputEncoding = THREE.sRGBEncoding dosen't work anymore because we are rendering inside the render target and those render targets dosen't support encoding.
+
+       The EffectComposer dosen't support the encoding, but we can add a pass that can fix the color.
+       This pass is "GammaCorrectionShader" and it will convert the linear encoding to a sRGB encoding.
+
+       GammaCorrectionShader is not great for performances.
