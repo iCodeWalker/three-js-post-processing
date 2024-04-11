@@ -75,3 +75,8 @@ And with the second camera we will do a render and put it on the screen.
        This pass is "GammaCorrectionShader" and it will convert the linear encoding to a sRGB encoding.
 
        GammaCorrectionShader is not great for performances.
+
+11. GammaCorrectionShader
+
+    1. import GammaCorrectionShader shader.
+    2. Instantiate the ShaderPass with the GammaCorrectionShader as a parameter and add it to effectComposer.

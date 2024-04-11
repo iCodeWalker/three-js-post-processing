@@ -13,6 +13,8 @@ import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass.js";
 // for using RBGShift pass we have to use it with ShaderPass
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
+// import GammaCorrectionShader
+import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
 
 /**
  * Base
@@ -177,6 +179,13 @@ effectComposer.addPass(glitchPass);
 const rgbShiftPass = new ShaderPass(RGBShiftShader);
 rgbShiftPass.enabled = true;
 effectComposer.addPass(rgbShiftPass);
+
+/**
+ * Instantiate the 'ShaderPass' with 'GammaCorrectionShader'
+ */
+const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
+gammaCorrectionPass.enabled = true;
+effectComposer.addPass(gammaCorrectionPass);
 
 /**
  * Animate
