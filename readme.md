@@ -159,3 +159,8 @@ And with the second camera we will do a render and put it on the screen.
     We will deform the uv coordinates to create a displacement effect.
 
     Create a new Shader named 'DisplacementShader', then a new pass named 'displacementPass' from the ShaderPass and add it to 'effectComposer'.
+
+17. Futuristic displacement pass :
+
+    Instead of sinus displacement we can use a texture.
+    Add a uNormalMap uniform.

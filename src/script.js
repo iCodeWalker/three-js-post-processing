@@ -284,7 +284,8 @@ gui
 const DisplacementShader = {
   uniforms: {
     tDiffuse: { value: null },
-    uTime: { value: null }, // For time based animation
+    // uTime: { value: null }, // For time based animation
+    uNormalMap: { value: null },
   },
   vertexShader: `
     varying vec2 vUv;
@@ -296,20 +297,28 @@ const DisplacementShader = {
   `,
   fragmentShader: `
     uniform sampler2D tDiffuse;
+    uniform sampler2D uNormalMap;
     varying vec2 vUv;
 
-    uniform float uTime;
+    // uniform float uTime;
 
     void main() {
 
-      vec2 newUv = vec2(
-        vUv.x,
-        vUv.y + sin(vUv.x * 10.0 + uTime) * 0.1
-      );
+      // vec2 newUv = vec2(
+      //   vUv.x,
+      //   vUv.y + sin(vUv.x * 10.0 + uTime) * 0.1
+      // );
+
+      vec3 normalColor = texture2D(uNormalMap, vUv).xyz * 2.0 - 1.0;
+      vec2 newUv = vUv + normalColor.xy * 0.1;
   
       vec4 color = texture2D(tDiffuse, newUv);
       // color.r += 0.1;
       // color.b += 0.1;
+
+      vec3 lightDirection = normalize(vec3(-1.0, 1.0, 0.0));
+      float lightness = clamp(dot(normalColor, lightDirection),0.0, 1.0);
+      color += lightness * 2.0;
       gl_FragColor = color;
     }
   `,
@@ -318,7 +327,11 @@ const DisplacementShader = {
 // Create the pass with 'shaderPass' and add it to our effectComposer
 const displacementPass = new ShaderPass(DisplacementShader);
 // Set value of 'uTime' after creating the pass to 0.
-displacementPass.material.uniforms.uTime.value = 0;
+// displacementPass.material.uniforms.uTime.value = 0;
+displacementPass.material.uniforms.uNormalMap.value = textureLoader.load(
+  "/textures/interfaceNormalMap.png"
+);
+
 effectComposer.addPass(displacementPass);
 
 // ###### AnitAliasing pass should be after gammaCorrectionPass
@@ -348,7 +361,7 @@ const tick = () => {
   effectComposer.render();
 
   // update the pass for displacement animation
-  displacementPass.material.uniforms.uTime.value = elapsedTime;
+  // displacementPass.material.uniforms.uTime.value = elapsedTime;
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);
