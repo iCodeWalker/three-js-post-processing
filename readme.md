@@ -82,5 +82,32 @@ And with the second camera we will do a render and put it on the screen.
     2. Instantiate the ShaderPass with the GammaCorrectionShader as a parameter and add it to effectComposer.
 
 12. Resizing :
+
     1. We did the resizing on the renderer, but now we have to do it on the effectComposer too.
     2. The resizing isn't handle properly, we need to call the setSize(...) on effectComposer inside the resize callback function.
+
+13. Fixing AntiAlias (fixing stair effects on the corners)
+
+    1. EffectComposer is using render target without the antialias.
+    2. Provide our own render target on which we add the antialias, but that won't work in all modern browsers.
+    3. Use a pass to do the antialias but with lesser performance and a slightly different result.
+    4. A combination of the two previous options where we test if the browser supports the antialias on the render target, and if not, we use an antialias pass.
+
+    5. Adding Antialias to the render target:
+       by default EffectComposer is using a WebGLRenderTarget without the antialias.
+
+       The "WebGLRenderTarget" can receive a third parameter that is an object and that will contain some options. The only property that we need to set is the samples
+
+       const renderTarget = new THREE.WebGLRenderTarget(800, 600, { samples : 2});
+
+       The more samples, the better the antialias. 0 corresponds to no samples.
+       Every increase on this value will lower the performance.
+
+       This won't work for all browser and to overcome this we need to use pass.
+
+    6. Using an antialias pass:
+       Using different passes
+       1. FXAA : Performant, but the result is just ok and can be blurry.
+       2. SMAA : Usually better than FXAA but less performant - not to be confused with MSAA (by default)
+       3. SSAA : Best quality but the worst performance.
+       4. TAA : Performant but limited.

@@ -150,9 +150,18 @@ renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 /**
+ * Render Target
+ */
+const renderTarget = new THREE.WebGLRenderTarget(800, 600, {
+  samples: renderer.getPixelRatio() === 1 ? 2 : 0,
+});
+
+// Send this renderTarget to effectComposer
+
+/**
  * Instantiate the 'EffectComposer'
  */
-const effectComposer = new EffectComposer(renderer);
+const effectComposer = new EffectComposer(renderer, renderTarget);
 effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 effectComposer.setSize(sizes.width, sizes.height);
 
@@ -174,14 +183,14 @@ effectComposer.addPass(dotScreenPass);
  */
 const glitchPass = new GlitchPass();
 glitchPass.goWild = false;
-glitchPass.enabled = false;
+glitchPass.enabled = true;
 effectComposer.addPass(glitchPass);
 
 /**
  * Instantiate the 'ShaderPass' with 'RGBShiftShader'
  */
 const rgbShiftPass = new ShaderPass(RGBShiftShader);
-rgbShiftPass.enabled = true;
+rgbShiftPass.enabled = false;
 effectComposer.addPass(rgbShiftPass);
 
 /**
