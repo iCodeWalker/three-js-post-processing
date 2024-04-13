@@ -107,7 +107,15 @@ And with the second camera we will do a render and put it on the screen.
 
     6. Using an antialias pass:
        Using different passes
+
        1. FXAA : Performant, but the result is just ok and can be blurry.
        2. SMAA : Usually better than FXAA but less performant - not to be confused with MSAA (by default)
        3. SSAA : Best quality but the worst performance.
        4. TAA : Performant but limited.
+
+       import SMAAPass, instantiate it and add it to effectComposer, Do it after the "gammaCorrectionPass"
+
+       AnitAliasing pass should be after gammaCorrectionPass
+
+       Because the SMAA pass we analyse the pixel it will check the pixel compare to the neighbour's pixels and stuff like that and decides if those needs to be blurred.
+       And if we do it before the gammaCorrectionPass than it will compare the pixels that will change after.

@@ -15,6 +15,8 @@ import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 // import GammaCorrectionShader
 import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
+// import SMAA Pass
+import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
 
 /**
  * Base
@@ -153,7 +155,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Render Target
  */
 const renderTarget = new THREE.WebGLRenderTarget(800, 600, {
-  samples: renderer.getPixelRatio() === 1 ? 2 : 0,
+  // samples: renderer.getPixelRatio() === 1 ? 2 : 0,
 });
 
 // Send this renderTarget to effectComposer
@@ -199,6 +201,14 @@ effectComposer.addPass(rgbShiftPass);
 const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 gammaCorrectionPass.enabled = true;
 effectComposer.addPass(gammaCorrectionPass);
+
+// ###### AnitAliasing pass should be after gammaCorrectionPass
+
+/**
+ * Instantiate the 'SMAAPass'
+ */
+const smaaPass = new SMAAPass();
+effectComposer.addPass(smaaPass);
 
 /**
  * Animate
