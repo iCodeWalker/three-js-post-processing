@@ -218,6 +218,65 @@ const gammaCorrectionPass = new ShaderPass(GammaCorrectionShader);
 gammaCorrectionPass.enabled = true;
 effectComposer.addPass(gammaCorrectionPass);
 
+/**
+ * ####### Tint Pass (Custom Pass) ########
+ */
+
+const TintShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTint: { value: null },
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vUv = uv;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    uniform vec3 uTint;
+    varying vec2 vUv;
+
+    void main() {
+      vec4 color = texture2D(tDiffuse, vUv);
+      // color.r += 0.1;
+      // color.b += 0.1;
+      color.rgb += uTint;
+      gl_FragColor = color;
+    }
+  `,
+};
+
+// Create the pass with 'shaderPass' and add it to our effectComposer
+const tintPass = new ShaderPass(TintShader);
+// We set the default value of 'uTint' to null because we are going to change it once we
+// instantiate the ShaderPass
+tintPass.material.uniforms.uTint.value = new THREE.Vector3();
+effectComposer.addPass(tintPass);
+
+// ######## Adding to GUI ########
+gui
+  .add(tintPass.material.uniforms.uTint.value, "x")
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name("Red");
+gui
+  .add(tintPass.material.uniforms.uTint.value, "y")
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name("Green");
+gui
+  .add(tintPass.material.uniforms.uTint.value, "z")
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name("Blue");
+
 // ###### AnitAliasing pass should be after gammaCorrectionPass
 
 /**

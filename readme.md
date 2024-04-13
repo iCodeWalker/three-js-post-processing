@@ -136,3 +136,21 @@ And with the second camera we will do a render and put it on the screen.
        Strength : How strong is the glow.
        radius : How far that brightness can spread.
        threshold : At what luminosity limit things start to glow.
+
+15. Custom Pass : (Creating our own pass)
+
+    1. It's like creating our own shader.
+    2. Create a shader which is an object with following properties :
+
+       1. uniforms : Same format as of uniforms for shaders.
+       2. vertexShader : This one has almost always the same code and will put the plane in front of the view.
+       3. fragmentShader : The fragment shader that will do the post-processing effect.
+
+    3. After creating the Custom pass, we need the texture from the previous pass, set a tDiffuse uniform to null and EffectComposer will update it automatically.
+       uniforms: {
+       tDiffuse: { value: null },
+       },
+
+    4. In order to pick the right pixel colors on that 'tDiffuse' texture, we need to use texture2D(...) and provide the uv coordinates.
+
+    5. Create a 'uTint' uniform to control the tint.
