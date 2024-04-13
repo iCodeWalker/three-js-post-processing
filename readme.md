@@ -119,3 +119,10 @@ And with the second camera we will do a render and put it on the screen.
 
        Because the SMAA pass we analyse the pixel it will check the pixel compare to the neighbour's pixels and stuff like that and decides if those needs to be blurred.
        And if we do it before the gammaCorrectionPass than it will compare the pixels that will change after.
+
+    7. Combining both solutions:
+       If the 'samples' property isn't supported by the browser (the browser is using WebGL 1), it'll be ignored. And will be going to use SMAA pass.
+
+       We need to test if the user has a pixel ratio to 1 and if he dosen't support WebGL 2, if so, we add the SMAA Pass.
+
+       To know if the browser supports WebGL 2 we can use capabilities property on the render.

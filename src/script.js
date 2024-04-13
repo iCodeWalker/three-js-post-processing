@@ -155,7 +155,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  * Render Target
  */
 const renderTarget = new THREE.WebGLRenderTarget(800, 600, {
-  // samples: renderer.getPixelRatio() === 1 ? 2 : 0,
+  samples: renderer.getPixelRatio() === 1 ? 2 : 0,
 });
 
 // Send this renderTarget to effectComposer
@@ -207,8 +207,10 @@ effectComposer.addPass(gammaCorrectionPass);
 /**
  * Instantiate the 'SMAAPass'
  */
-const smaaPass = new SMAAPass();
-effectComposer.addPass(smaaPass);
+if (renderer.getPixelRatio() === 1 && !renderer.capabilities.isWebGL2) {
+  const smaaPass = new SMAAPass();
+  effectComposer.addPass(smaaPass);
+}
 
 /**
  * Animate
