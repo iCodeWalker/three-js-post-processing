@@ -126,3 +126,13 @@ And with the second camera we will do a render and put it on the screen.
        We need to test if the user has a pixel ratio to 1 and if he dosen't support WebGL 2, if so, we add the SMAA Pass.
 
        To know if the browser supports WebGL 2 we can use capabilities property on the render.
+
+14. UnrealBloomPass :
+
+    1. Import the UnrealBloomPass.
+    2. Instantiate it and add it to the effectComposer.
+
+    3. three main parameters to control:
+       Strength : How strong is the glow.
+       radius : How far that brightness can spread.
+       threshold : At what luminosity limit things start to glow.

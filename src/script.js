@@ -17,6 +17,8 @@ import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
 import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
 // import SMAA Pass
 import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
+// import UnrealBloomPass
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 /**
  * Base
@@ -185,7 +187,7 @@ effectComposer.addPass(dotScreenPass);
  */
 const glitchPass = new GlitchPass();
 glitchPass.goWild = false;
-glitchPass.enabled = true;
+glitchPass.enabled = false;
 effectComposer.addPass(glitchPass);
 
 /**
@@ -194,6 +196,20 @@ effectComposer.addPass(glitchPass);
 const rgbShiftPass = new ShaderPass(RGBShiftShader);
 rgbShiftPass.enabled = false;
 effectComposer.addPass(rgbShiftPass);
+
+/**
+ * Instantiate the 'UnrealBloomPass'
+ */
+const unrealBloomPass = new UnrealBloomPass();
+unrealBloomPass.strength = 0.9;
+unrealBloomPass.radius = 1;
+unrealBloomPass.threshold = 0.6;
+effectComposer.addPass(unrealBloomPass);
+
+gui.add(unrealBloomPass, "enabled");
+gui.add(unrealBloomPass, "strength").min(0).max(2).step(0.001);
+gui.add(unrealBloomPass, "radius").min(0).max(2).step(0.001);
+gui.add(unrealBloomPass, "threshold").min(0).max(2).step(0.001);
 
 /**
  * Instantiate the 'ShaderPass' with 'GammaCorrectionShader'
