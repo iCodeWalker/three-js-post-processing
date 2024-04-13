@@ -277,6 +277,50 @@ gui
   .step(0.001)
   .name("Blue");
 
+/**
+ * ####### Displacement Pass (Custom Pass) ########
+ */
+
+const DisplacementShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    uTime: { value: null }, // For time based animation
+  },
+  vertexShader: `
+    varying vec2 vUv;
+
+    void main() {
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      vUv = uv;
+    }
+  `,
+  fragmentShader: `
+    uniform sampler2D tDiffuse;
+    varying vec2 vUv;
+
+    uniform float uTime;
+
+    void main() {
+
+      vec2 newUv = vec2(
+        vUv.x,
+        vUv.y + sin(vUv.x * 10.0 + uTime) * 0.1
+      );
+  
+      vec4 color = texture2D(tDiffuse, newUv);
+      // color.r += 0.1;
+      // color.b += 0.1;
+      gl_FragColor = color;
+    }
+  `,
+};
+
+// Create the pass with 'shaderPass' and add it to our effectComposer
+const displacementPass = new ShaderPass(DisplacementShader);
+// Set value of 'uTime' after creating the pass to 0.
+displacementPass.material.uniforms.uTime.value = 0;
+effectComposer.addPass(displacementPass);
+
 // ###### AnitAliasing pass should be after gammaCorrectionPass
 
 /**
@@ -302,6 +346,9 @@ const tick = () => {
   // renderer.render(scene, camera);
   // Replace the  renderer.render(scene, camera) with effectComposer.render();
   effectComposer.render();
+
+  // update the pass for displacement animation
+  displacementPass.material.uniforms.uTime.value = elapsedTime;
 
   // Call tick again on the next frame
   window.requestAnimationFrame(tick);

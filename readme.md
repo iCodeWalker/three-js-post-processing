@@ -154,3 +154,8 @@ And with the second camera we will do a render and put it on the screen.
     4. In order to pick the right pixel colors on that 'tDiffuse' texture, we need to use texture2D(...) and provide the uv coordinates.
 
     5. Create a 'uTint' uniform to control the tint.
+
+16. Displacement Pass :
+    We will deform the uv coordinates to create a displacement effect.
+
+    Create a new Shader named 'DisplacementShader', then a new pass named 'displacementPass' from the ShaderPass and add it to 'effectComposer'.
